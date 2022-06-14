@@ -10,7 +10,10 @@ import {
   AUTHENTICATE_USER_INITIATE,
   AUTHENTICATE_USER_SUCCESS,
   AUTHENTICATE_USER_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions";
+import { initialState } from "./appContext";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -57,6 +60,22 @@ const reducer = (state, action) => {
         showAlert: true,
         alertType: "danger",
         alertText: action.payload.msg,
+      };
+    }
+
+    case LOGOUT_USER: {
+      return {
+        ...state,
+        user: null,
+        token: null,
+        userLocation: "",
+        jobLocation: "",
+      };
+    }
+    case TOGGLE_SIDEBAR: {
+      return {
+        ...initialState,
+        showSidebar: !state.showSidebar,
       };
     }
     default:

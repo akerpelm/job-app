@@ -13,6 +13,8 @@ import {
   AUTHENTICATE_USER_INITIATE,
   AUTHENTICATE_USER_SUCCESS,
   AUTHENTICATE_USER_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions";
 
 const token = localStorage.getItem("token");
@@ -28,6 +30,7 @@ const initialState = {
   token: token,
   userLocation: userLocation || "",
   jobLocation: userLocation || "",
+  showSidebar: false,
 };
 
 const AppContext = React.createContext();
@@ -58,54 +61,6 @@ const AppProvider = ({ children }) => {
     localStorage.removeItem("location");
   };
 
-  // const registerUser = async (currentUser) => {
-  //   dispatch({ type: REGISTER_USER_INITIATE });
-  //   try {
-  //     const response = await axios.post("/api/v1/auth/register", currentUser);
-  //     const { user, token, location } = response.data;
-  //     dispatch({
-  //       type: REGISTER_USER_SUCCESS,
-  //       payload: {
-  //         user,
-  //         token,
-  //         location,
-  //       },
-  //     });
-  //     persistUserDataToLocalStorage({ user, token, location });
-  //   } catch (error) {
-  //     console.log(error.response);
-  //     dispatch({
-  //       type: REGISTER_USER_ERROR,
-  //       payload: { msg: error.response.data.msg },
-  //     });
-  //   }
-  //   clearAlert();
-  // };
-
-  // const loginUser = async (currentUser) => {
-  //   dispatch({ type: LOGIN_USER_INITIATE });
-  //   try {
-  //     const { data } = await axios.post("api/v1/auth/login", currentUser);
-  //     const { user, token, location } = data;
-  //     dispatch({
-  //       type: LOGIN_USER_SUCCESS,
-  //       payload: {
-  //         user,
-  //         token,
-  //         location,
-  //       },
-  //     });
-  //     persistUserDataToLocalStorage({ user, token, location });
-  //   } catch (error) {
-  //     console.log(error.response);
-  //     dispatch({
-  //       type: LOGIN_USER_ERROR,
-  //       payload: { msg: error.response.data.msg },
-  //     });
-  //   }
-  //   clearAlert();
-  // };
-
   const authenticateUser = async ({ currentUser, authMethod, alertText }) => {
     dispatch({ type: AUTHENTICATE_USER_INITIATE });
     try {
@@ -134,14 +89,23 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const logoutCurrentUser = () => {
+    dispatch({ type: LOGOUT_USER });
+    removeUserDataFromLocalStorage();
+  };
+
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR });
+  };
+
   return (
     <AppContext.Provider
       value={{
         ...state,
         displayAlert,
-        // registerUser,
-        // loginUser,
         authenticateUser,
+        toggleSidebar,
+        logoutCurrentUser,
       }}
     >
       {children}
