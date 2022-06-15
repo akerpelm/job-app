@@ -44,6 +44,8 @@ const UserSchema = new mongoose.Schema({
 // ie findOneAndUpdate does not save
 // use function declaration for password scoping.
 UserSchema.pre("save", async function () {
+  // console.log(this.modifiedPaths()); Values that are different to those in the DB.
+  if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
