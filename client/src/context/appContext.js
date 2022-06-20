@@ -4,18 +4,16 @@ import reducer from "./reducers";
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
-  // REGISTER_USER_INITIATE,
-  // REGISTER_USER_SUCCESS,
-  // REGISTER_USER_ERROR,
-  // LOGIN_USER_INITIATE,
-  // LOGIN_USER_SUCCESS,
-  // LOGIN_USER_ERROR,
   AUTHENTICATE_USER_INITIATE,
   AUTHENTICATE_USER_SUCCESS,
   AUTHENTICATE_USER_ERROR,
   TOGGLE_SIDEBAR,
   LOGOUT_USER,
+  UPDATE_USER_INITIATE,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from "./actions";
+import { jobTypeOptions, jobStatusOptions } from "./contextConstants";
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
@@ -29,8 +27,16 @@ const initialState = {
   user: user ? JSON.parse(user) : null,
   token: token,
   userLocation: userLocation || "",
-  jobLocation: userLocation || "",
   showSidebar: false,
+  isEditing: false,
+  editJobId: "",
+  position: "",
+  company: "",
+  jobTypeOptions,
+  jobType: "Full-Time",
+  jobStatusOptions,
+  jobStatus: "Application In Progress",
+  jobLocation: userLocation || "",
 };
 
 const AppContext = React.createContext();
@@ -45,7 +51,7 @@ const AppProvider = ({ children }) => {
 
   authFetch.interceptors.request.use(
     (config) => {
-      // config.headers.common["Authorization"] = `Bearer ${state.token}`;
+      config.headers.common["Authorization"] = `Bearer ${state.token}`;
       return config;
     },
     (error) => {
@@ -58,9 +64,9 @@ const AppProvider = ({ children }) => {
       return response;
     },
     (error) => {
-      console.log(error.response);
+      // console.log(error.response);
       if (error.response.status === 401) {
-        console.log("AUTH ERROR");
+        logoutCurrentUser();
       }
       return Promise.reject(error);
     }
@@ -123,12 +129,26 @@ const AppProvider = ({ children }) => {
   };
 
   const updateUser = async (currentUser) => {
+    dispatch({ type: UPDATE_USER_INITIATE });
     try {
-      const { data } = await authFetch.patch("/auth/updateUser", currentUser);
-      console.log(data);
+      const {
+        data: { user, token, location },
+      } = await authFetch.patch("/auth/updateUser", currentUser);
+
+      dispatch({
+        type: UPDATE_USER_SUCCESS,
+        payload: { user, token, location },
+      });
+      persistUserDataToLocalStorage({ user, token, location });
     } catch (error) {
-      // console.log(error);
+      if (error.response.status !== 401) {
+        dispatch({
+          type: UPDATE_USER_ERROR,
+          payload: { msg: error.response.data.msg },
+        });
+      }
     }
+    clearAlert();
   };
 
   const toggleSidebar = () => {

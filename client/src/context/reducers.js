@@ -1,17 +1,14 @@
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
-  REGISTER_USER_INITIATE,
-  REGISTER_USER_SUCCESS,
-  REGISTER_USER_ERROR,
-  LOGIN_USER_INITIATE,
-  LOGIN_USER_SUCCESS,
-  LOGIN_USER_ERROR,
   AUTHENTICATE_USER_INITIATE,
   AUTHENTICATE_USER_SUCCESS,
   AUTHENTICATE_USER_ERROR,
   TOGGLE_SIDEBAR,
   LOGOUT_USER,
+  UPDATE_USER_INITIATE,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -54,6 +51,35 @@ const reducer = (state, action) => {
       };
     }
     case AUTHENTICATE_USER_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: "danger",
+        alertText: action.payload.msg,
+      };
+    }
+    case UPDATE_USER_INITIATE: {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case UPDATE_USER_SUCCESS: {
+      const { user, token, location } = action.payload;
+      return {
+        ...state,
+        user,
+        token,
+        userLocation: location,
+        jobLocation: location,
+        isLoading: false,
+        showAlert: true,
+        alertType: "success",
+        alertText: "Profile updated.",
+      };
+    }
+    case UPDATE_USER_ERROR: {
       return {
         ...state,
         isLoading: false,
