@@ -12,6 +12,7 @@ import {
   UPDATE_USER_INITIATE,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  HANDLE_CHANGE,
 } from "./actions";
 import { jobTypeOptions, jobStatusOptions } from "./contextConstants";
 
@@ -155,6 +156,13 @@ const AppProvider = ({ children }) => {
     dispatch({ type: TOGGLE_SIDEBAR });
   };
 
+  const handleChange = ({ name, value }) => {
+    dispatch({
+      type: HANDLE_CHANGE,
+      payload: { name, value },
+    });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -164,6 +172,7 @@ const AppProvider = ({ children }) => {
         toggleSidebar,
         logoutCurrentUser,
         updateUser,
+        handleChange,
       }}
     >
       {children}

@@ -9,6 +9,7 @@ import {
   UPDATE_USER_INITIATE,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+  HANDLE_CHANGE,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -104,67 +105,17 @@ const reducer = (state, action) => {
         showSidebar: !state.showSidebar,
       };
     }
+    case HANDLE_CHANGE: {
+      const { name, value } = action.payload;
+      debugger;
+      return {
+        ...initialState,
+        [name]: value,
+      };
+    }
     default:
       throw new Error(`No such action: ${action.type}`);
   }
-  // case REGISTER_USER_INITIATE: {
-  //   return {
-  //     ...state,
-  //     isLoading: true,
-  //   };
-  // }
-
-  // case REGISTER_USER_SUCCESS: {
-  //   const { user, token, location } = action.payload;
-  //   return {
-  //     ...state,
-  //     user,
-  //     token,
-  //     userLocation: location,
-  //     jobLocation: location,
-  //     isLoading: false,
-  //     showAlert: true,
-  //     alertType: "success",
-  //     alertText: "User Created. Redirecting...",
-  //   };
-  // }
-  // case REGISTER_USER_ERROR: {
-  //   return {
-  //     ...state,
-  //     showAlert: true,
-  //     alertType: "danger",
-  //     alertText: action.payload.msg,
-  //   };
-  // }
-  // case LOGIN_USER_INITIATE: {
-  //   return {
-  //     ...state,
-  //     isLoading: true,
-  //   };
-  // }
-  // case LOGIN_USER_SUCCESS: {
-  //   const { user, token, location } = action.payload;
-  //   return {
-  //     ...state,
-  //     user,
-  //     token,
-  //     userLocation: location,
-  //     jobLocation: location,
-  //     isLoading: false,
-  //     showAlert: true,
-  //     alertType: "success",
-  //     alertText: "Login successful. Redirecting...",
-  //   };
-  // }
-  // case LOGIN_USER_ERROR: {
-  //   return {
-  //     ...state,
-  //     isLoading: false,
-  //     showAlert: true,
-  //     alertType: "danger",
-  //     alertText: action.payload.msg,
-  //   };
-  // }
 };
 
 export default reducer;

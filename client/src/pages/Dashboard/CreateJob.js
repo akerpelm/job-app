@@ -1,4 +1,4 @@
-import { FormRow, Alert } from "../../components";
+import { FormRow, Alert, FormRowDropdown } from "../../components";
 import { useAppContext } from "../../context/appContext";
 import Wrapper from "../../assets/wrappers/DashboardFormPage";
 
@@ -14,12 +14,13 @@ const CreateJob = () => {
     jobStatus,
     jobStatusOptions,
     isEditing,
+    handleChange,
   } = useAppContext();
 
   const handleJobInput = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
+    const { name, value } = event.target;
     console.log(`${name}: ${value}`);
+    handleChange(event.target);
   };
 
   const handleSubmit = (event) => {
@@ -57,21 +58,20 @@ const CreateJob = () => {
             value={jobLocation}
             handleChange={handleJobInput}
           />
-          <div className="form-row">
-            <label htmlFor="jobType" className="form-label">
-              job type
-            </label>
-            <select
-              name="jobType"
-              value={jobType}
-              onChange={handleJobInput}
-              className="form-select"
-            >
-              {jobTypeOptions.map((item, index) => {
-                <option value={item.value} key={index}></option>;
-              })}
-            </select>
-          </div>
+          <FormRowDropdown
+            name="jobType"
+            value={jobType}
+            handleChange={handleJobInput}
+            labelText="job type"
+            options={jobTypeOptions}
+          />
+          <FormRowDropdown
+            name="jobStatus"
+            value={jobStatus}
+            handleChange={handleJobInput}
+            labelText="job status"
+            options={jobStatusOptions}
+          />
           <div className="btn-container">
             <button
               type="submit"
