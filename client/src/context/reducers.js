@@ -10,6 +10,10 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
+  CLEAR_VALUES,
+  CREATE_JOB_INITIATE,
+  CREATE_JOB_SUCCESS,
+  CREATE_JOB_ERROR,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -107,10 +111,42 @@ const reducer = (state, action) => {
     }
     case HANDLE_CHANGE: {
       const { name, value } = action.payload;
-      debugger;
       return {
-        ...initialState,
+        ...state,
         [name]: value,
+      };
+    }
+    case CLEAR_VALUES: {
+      const initialState = {
+        isEditing: false,
+        editJobId: "",
+        position: "",
+        company: "",
+        jobType: "Full-Time",
+        jobStatus: "Application In Progress",
+        jobLocation: state.userLocation,
+      };
+      return { ...state, ...initialState };
+    }
+    case CREATE_JOB_INITIATE: {
+      return { ...state, isLoading: true };
+    }
+    case CREATE_JOB_SUCCESS: {
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: "success",
+        alertText: "Created new job",
+      };
+    }
+    case CREATE_JOB_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        showALert: true,
+        alertType: "danger",
+        alertText: action.payload.msg,
       };
     }
     default:

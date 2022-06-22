@@ -13,6 +13,10 @@ import {
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   HANDLE_CHANGE,
+  CLEAR_VALUES,
+  CREATE_JOB_INITIATE,
+  CREATE_JOB_SUCCESS,
+  CREATE_JOB_ERROR,
 } from "./actions";
 import { jobTypeOptions, jobStatusOptions } from "./contextConstants";
 
@@ -163,6 +167,34 @@ const AppProvider = ({ children }) => {
     });
   };
 
+  const clearValues = () => {
+    dispatch({ type: CLEAR_VALUES });
+  };
+
+  const createJob = async () => {
+    dispatch({ CREATE_JOB_INITIATE });
+    try {
+      const { position, company, jobLocation, jobType, status } = state;
+
+      await authFetch.post("/jobs", {
+        company,
+        position,
+        jobLocation,
+        jobType,
+        status,
+      });
+      dispatch({ CREATE_JOB_SUCCESS });
+      dispatch({ CLEAR_VALUES });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: CREATE_JOB_ERROR,
+        payload: { msg: error.response.data.message },
+      });
+    }
+    clearAlert();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -173,6 +205,8 @@ const AppProvider = ({ children }) => {
         logoutCurrentUser,
         updateUser,
         handleChange,
+        clearValues,
+        createJob,
       }}
     >
       {children}

@@ -15,24 +15,26 @@ const CreateJob = () => {
     jobStatusOptions,
     isEditing,
     handleChange,
+    clearValues,
+    isLoading,
+    createJob,
   } = useAppContext();
 
   const handleJobInput = (event) => {
     const { name, value } = event.target;
-    console.log(`${name}: ${value}`);
-    handleChange(event.target);
+    handleChange({ name, value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!position || !company || !jobLocation) {
-      displayAlert();
-      return;
-    }
-    console.log("created job");
+    // if (!position || !company || !jobLocation) {
+    //   displayAlert();
+    //   return;
+    // }
+    if (isEditing) return;
+    createJob();
   };
-
   return (
     <Wrapper>
       <form className="form">
@@ -77,8 +79,18 @@ const CreateJob = () => {
               type="submit"
               className="btn btn-block submit-btn"
               onClick={handleSubmit}
+              disabled={isLoading}
             >
               Submit
+            </button>
+            <button
+              className="btn btn-block clear-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                clearValues();
+              }}
+            >
+              Clear
             </button>
           </div>
         </div>
