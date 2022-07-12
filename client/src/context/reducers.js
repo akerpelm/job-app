@@ -14,6 +14,8 @@ import {
   CREATE_JOB_INITIATE,
   CREATE_JOB_SUCCESS,
   CREATE_JOB_ERROR,
+  GET_JOBS_INITIATE,
+  GET_JOBS_SUCCESS,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -144,9 +146,28 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: false,
-        showALert: true,
+        showAlert: true,
         alertType: "danger",
         alertText: action.payload.msg,
+      };
+    }
+
+    case GET_JOBS_INITIATE: {
+      return {
+        ...state,
+        isLoading: true,
+        showAlert: false,
+      };
+    }
+
+    case GET_JOBS_SUCCESS: {
+      const { jobs, totalJobs, pages } = action.payload;
+      return {
+        ...state,
+        isLoading: false,
+        jobs,
+        totalJobs,
+        pages,
       };
     }
     default:
