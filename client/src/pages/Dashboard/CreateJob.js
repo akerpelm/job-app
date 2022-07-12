@@ -28,17 +28,17 @@ const CreateJob = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // if (!position || !company || !jobLocation) {
-    //   displayAlert();
-    //   return;
-    // }
+    if (!position || !company || !jobLocation) {
+      displayAlert();
+      return;
+    }
     if (isEditing) return;
     createJob();
   };
   return (
     <Wrapper>
       <form className="form">
-        <h3>{isEditing ? "Edit job" : "Create Job"}</h3>
+        <h3>{isEditing ? "Edit Job" : "Create Job"}</h3>
         {showAlert && <Alert />}
         <div className="form-center">
           <FormRow

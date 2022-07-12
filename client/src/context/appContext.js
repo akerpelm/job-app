@@ -172,7 +172,7 @@ const AppProvider = ({ children }) => {
   };
 
   const createJob = async () => {
-    dispatch({ CREATE_JOB_INITIATE });
+    dispatch({ type: CREATE_JOB_INITIATE });
     try {
       const { position, company, jobLocation, jobType, status } = state;
 
@@ -183,8 +183,8 @@ const AppProvider = ({ children }) => {
         jobType,
         status,
       });
-      dispatch({ CREATE_JOB_SUCCESS });
-      dispatch({ CLEAR_VALUES });
+      dispatch({ type: CREATE_JOB_SUCCESS });
+      dispatch({ type: CLEAR_VALUES });
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
