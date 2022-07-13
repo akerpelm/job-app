@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const Wrapper = styled.article`
   background: var(--white);
@@ -41,9 +41,13 @@ const Wrapper = styled.article`
       letter-spacing: var(--letterSpacing);
     }
   }
-  .pending {
+  .application-in-progress {
     background: #fcefc7;
     color: #e9b949;
+  }
+  .applied {
+  }
+  .phone-screen {
   }
   .interview {
     background: #e0e8f9;
@@ -52,6 +56,14 @@ const Wrapper = styled.article`
   .declined {
     color: #d66a6a;
     background: #ffeeee;
+  }
+  .rejected {
+    color: #ffeeee;
+    background: #d66a6a;
+  }
+  .accepted {
+    background: #077422;
+    color: #99b3a0;
   }
   .content {
     padding: 1rem 1.5rem;
@@ -74,9 +86,10 @@ const Wrapper = styled.article`
   .status {
     border-radius: var(--borderRadius);
     text-transform: capitalize;
-    letter-spacing: var(--letterSpacing);
+    /* letter-spacing: var(--letterSpacing); */
     text-align: center;
-    width: 100px;
+    padding: 0 2px; //added
+    /* width: 100%; */
     height: 30px;
   }
   footer {
@@ -100,6 +113,6 @@ const Wrapper = styled.article`
   &:hover .actions {
     visibility: visible;
   }
-`
+`;
 
-export default Wrapper
+export default Wrapper;

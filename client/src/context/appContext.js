@@ -25,7 +25,6 @@ import { jobTypeOptions, jobStatusOptions } from "./contextConstants";
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
-
 const initialState = {
   isLoading: false,
   showAlert: false,
@@ -180,14 +179,14 @@ const AppProvider = ({ children }) => {
   const createJob = async () => {
     dispatch({ type: CREATE_JOB_INITIATE });
     try {
-      const { position, company, jobLocation, jobType, status } = state;
+      const { position, company, jobLocation, jobType, jobStatus } = state;
 
       await authFetch.post("/jobs", {
         company,
         position,
         jobLocation,
         jobType,
-        status,
+        jobStatus,
       });
       dispatch({ type: CREATE_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -222,6 +221,13 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const setEditJob = (id) => {
+    console.log(`set edit job : ${id}`);
+  };
+  const deleteJob = (id) => {
+    console.log(`delete job : ${id}`);
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -234,6 +240,9 @@ const AppProvider = ({ children }) => {
         handleChange,
         clearValues,
         createJob,
+        getJobs,
+        setEditJob,
+        deleteJob,
       }}
     >
       {children}

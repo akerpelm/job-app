@@ -12,7 +12,8 @@ const JobSchema = new mongoose.Schema(
       required: [true, "Please provide a position."],
       maxlength: 100,
     },
-    status: {
+    jobStatus: {
+      // TODO: Update enum values and all calls to ensure styling.
       type: String,
       enum: [
         "Application In Progress",

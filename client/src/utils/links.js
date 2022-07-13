@@ -18,8 +18,8 @@ const links = [
   },
   {
     id: 3,
-    text: "new job",
-    path: "new-job",
+    text: "add job",
+    path: "add-job",
     icon: <FaWpforms />,
   },
   {
