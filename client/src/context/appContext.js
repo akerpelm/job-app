@@ -41,7 +41,7 @@ const initialState = {
   jobTypeOptions,
   jobType: "Full-Time",
   jobStatusOptions,
-  jobStatus: "Application In Progress",
+  jobStatus: "In Progress",
   jobLocation: userLocation || "",
   jobs: [],
   totalJobs: 0,

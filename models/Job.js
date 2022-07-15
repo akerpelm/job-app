@@ -16,7 +16,7 @@ const JobSchema = new mongoose.Schema(
       // TODO: Update enum values and all calls to ensure styling.
       type: String,
       enum: [
-        "Application In Progress",
+        "In Progress",
         "Applied",
         "Phone Screen",
         "Interview",
@@ -24,7 +24,7 @@ const JobSchema = new mongoose.Schema(
         "Declined",
         "Accepted",
       ],
-      default: "Application In Progress",
+      default: "In Progress",
     },
     jobType: {
       type: String,
