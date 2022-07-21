@@ -16,15 +16,15 @@ const JobSchema = new mongoose.Schema(
       // TODO: Update enum values and all calls to ensure styling.
       type: String,
       enum: [
-        "In Progress",
-        "Applied",
+        "Application Pending",
+        "Application Submitted",
         "Phone Screen",
         "Interview",
         "Rejected",
         "Declined",
         "Accepted",
       ],
-      default: "In Progress",
+      default: "Application Pending",
     },
     jobType: {
       type: String,

@@ -41,17 +41,21 @@ const Wrapper = styled.article`
       letter-spacing: var(--letterSpacing);
     }
   }
-  .in-progress {
+  .application-pending {
     background: #fcefc7;
     color: #e9b949;
   }
-  .applied {
+  .application-submitted {
+    background: #e9b949;
+    color: #fcefc7;
   }
   .phone-screen {
-  }
-  .interview {
     background: #e0e8f9;
     color: #647acb;
+  }
+  .interview {
+    background: #647acb;
+    color: #e0e8f9;
   }
   .declined {
     color: #d66a6a;
@@ -86,10 +90,9 @@ const Wrapper = styled.article`
   .status {
     border-radius: var(--borderRadius);
     text-transform: capitalize;
-    /* letter-spacing: var(--letterSpacing); */
+    letter-spacing: var(--letterSpacing);
     text-align: center;
-    padding: 0 2px; //added
-    /* width: 100%; */
+    max-width: 100%;
     height: 30px;
   }
   footer {

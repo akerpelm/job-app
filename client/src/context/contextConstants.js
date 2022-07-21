@@ -1,6 +1,6 @@
 const jobStatusOptions = [
-  "In Progress",
-  "Applied",
+  "Application Pending",
+  "Application Submitted",
   "Phone Screen",
   "Interview",
   "Rejected",

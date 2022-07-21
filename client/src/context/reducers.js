@@ -16,6 +16,7 @@ import {
   CREATE_JOB_ERROR,
   GET_JOBS_INITIATE,
   GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -125,7 +126,7 @@ const reducer = (state, action) => {
         position: "",
         company: "",
         jobType: "Full-Time",
-        jobStatus: "In Progress",
+        jobStatus: "Application Pending",
         jobLocation: state.userLocation,
       };
       return { ...state, ...initialState };
@@ -139,7 +140,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "success",
-        alertText: "Created new job",
+        alertText: "Job entered successfully",
       };
     }
     case CREATE_JOB_ERROR: {
@@ -168,6 +169,22 @@ const reducer = (state, action) => {
         jobs,
         totalJobs,
         pages,
+      };
+    }
+
+    case SET_EDIT_JOB: {
+      const { _id, position, company, jobType, jobStatus, jobLocation } =
+        state.jobs.find((job) => job._id === action.payload.id);
+
+      return {
+        ...state,
+        _id,
+        position,
+        company,
+        jobType,
+        jobStatus,
+        jobLocation,
+        isEditing: true,
       };
     }
     default:
