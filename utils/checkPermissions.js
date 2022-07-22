@@ -1,4 +1,4 @@
-import { UnauthenticatedError } from "../errors";
+import { UnauthenticatedError } from "../errors/index.js";
 
 export const checkPermission = (requestUser, actionUser) => {
   // if role === admin return
