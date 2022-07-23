@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { checkPermission } from "../utils/checkPermissions.js";
 import mongoose from "mongoose";
+import moment from "moment";
 
 const createJob = async (req, res) => {
   const { position, company } = req.body;
@@ -16,7 +17,7 @@ const createJob = async (req, res) => {
 };
 const deleteJob = async (req, res) => {
   const {
-    params: { id: jobId },
+    params: { id: jobId }
   } = req;
 
   const job = await Job.findOne({ _id: jobId });
@@ -37,7 +38,7 @@ const getAllJobs = async (req, res) => {
 const updateJob = async (req, res) => {
   const {
     params: { id: jobId },
-    body: { company, position },
+    body: { company, position }
   } = req;
 
   if (!company || !position) {
@@ -57,7 +58,7 @@ const updateJob = async (req, res) => {
 
   const updatedJob = await Job.findOneAndUpdate({ _id: jobId }, req.body, {
     new: true,
-    runValidators: true,
+    runValidators: true
   });
 
   res.status(StatusCodes.OK).json({ updatedJob });
@@ -66,7 +67,7 @@ const updateJob = async (req, res) => {
 const showStats = async (req, res) => {
   const jobStatusCount = await Job.aggregate([
     { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
-    { $group: { _id: "$jobStatus", count: { $sum: 1 } } },
+    { $group: { _id: "$jobStatus", count: { $sum: 1 } } }
   ]);
 
   const jobsGroupedByStatus = jobStatusCount.reduce((acc, curr) => {
@@ -75,6 +76,7 @@ const showStats = async (req, res) => {
     return acc;
   }, {});
 
+  console.log(jobsGroupedByStatus);
   const jobsByStatus = {
     applicationPending: jobsGroupedByStatus["Application Pending"] || 0,
     applicationSubmitted: jobsGroupedByStatus["Application Submitted"] || 0,
@@ -82,10 +84,41 @@ const showStats = async (req, res) => {
     interview: jobsGroupedByStatus["Interview"] || 0,
     rejected: jobsGroupedByStatus["Rejected"] || 0,
     declined: jobsGroupedByStatus["Declined"] || 0,
-    accepted: jobsGroupedByStatus["Accepted"] || 0,
+    accepted: jobsGroupedByStatus["Accepted"] || 0
   };
 
-  let monthlyApplications = [];
+  let monthlyApplications = await Job.aggregate([
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    {
+      $group: {
+        _id: {
+          year: {
+            $year: "$createdAt"
+          },
+          month: {
+            $month: "$createdAt"
+          }
+          // week: {
+          //   $week: "$createdAt"
+          // }
+        },
+        count: { $sum: 1 }
+      }
+    },
+    { $sort: { "_id.year": -1, "_id.month": -1, "_id.week": -1 } },
+    { $limit: 6 }
+  ]);
+
+  monthlyApplications = monthlyApplications
+    .map(({ _id: { year, month }, count }) => {
+      const date = moment()
+        .month(month - 1)
+        .year(year)
+        .format("MMM Y");
+
+      return { date, count };
+    })
+    .reverse();
 
   res.status(StatusCodes.OK).json({ jobsByStatus, monthlyApplications });
 };

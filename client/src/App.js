@@ -5,7 +5,7 @@ import {
   ListJobs,
   Profile,
   SharedLayout,
-  Stats,
+  Stats
 } from "./pages/Dashboard";
 
 function App() {

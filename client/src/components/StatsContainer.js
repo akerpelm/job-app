@@ -7,7 +7,6 @@ import Wrapper from "../assets/wrappers/StatsContainer";
 const StatsContainer = () => {
   const {
     jobStats: {
-      accepted,
       applicationPending,
       applicationSubmitted,
       declined,
@@ -20,21 +19,21 @@ const StatsContainer = () => {
   const allStats = [
     {
       title: "pending / submitted applications",
-      count: applicationPending + applicationSubmitted,
+      count: applicationPending + applicationSubmitted || null,
       icon: <GiSandsOfTime />,
       color: "#e9b949",
       bcg: "#fcefc7"
     },
     {
       title: " phone screens / interviews",
-      count: phoneScreen + interview,
+      count: phoneScreen + interview || null,
       icon: <MdOutlineEmojiPeople />,
       color: "#647acb",
       bcg: "#e0e7f9"
     },
     {
       title: "declined / turned down",
-      count: declined + rejected,
+      count: declined + rejected || null,
       icon: <GiCardDiscard />,
       color: "#d66a6a",
       bcg: "#ffeeee"
