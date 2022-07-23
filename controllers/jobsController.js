@@ -2,6 +2,7 @@ import Job from "../models/Job.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { checkPermission } from "../utils/checkPermissions.js";
+import mongoose from "mongoose";
 
 const createJob = async (req, res) => {
   const { position, company } = req.body;
@@ -63,7 +64,30 @@ const updateJob = async (req, res) => {
 };
 
 const showStats = async (req, res) => {
-  res.send("showStats");
+  const jobStatusCount = await Job.aggregate([
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $group: { _id: "$jobStatus", count: { $sum: 1 } } },
+  ]);
+
+  const jobsGroupedByStatus = jobStatusCount.reduce((acc, curr) => {
+    const { _id: jobStatus, count } = curr;
+    acc[jobStatus] = count;
+    return acc;
+  }, {});
+
+  const jobsByStatus = {
+    applicationPending: jobsGroupedByStatus["Application Pending"] || 0,
+    applicationSubmitted: jobsGroupedByStatus["Application Submitted"] || 0,
+    phoneScreen: jobsGroupedByStatus["Phone Screen"] || 0,
+    interview: jobsGroupedByStatus["Interview"] || 0,
+    rejected: jobsGroupedByStatus["Rejected"] || 0,
+    declined: jobsGroupedByStatus["Declined"] || 0,
+    accepted: jobsGroupedByStatus["Accepted"] || 0,
+  };
+
+  let monthlyApplications = [];
+
+  res.status(StatusCodes.OK).json({ jobsByStatus, monthlyApplications });
 };
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStats };

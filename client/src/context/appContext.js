@@ -24,6 +24,8 @@ import {
   EDIT_JOB_INITIATE,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  GET_JOB_STATS_INITIATE,
+  GET_JOB_STATS_SUCCESS
 } from "./actions";
 import { jobTypeOptions, jobStatusOptions } from "./contextConstants";
 
@@ -52,6 +54,8 @@ const initialState = {
   totalJobs: 0,
   pages: 1,
   currentPage: 1,
+  jobStats: {},
+  monthlyApplications: []
 };
 
 const AppContext = React.createContext();
@@ -61,7 +65,7 @@ const AppProvider = ({ children }) => {
 
   // Axios Sandbox
   const authFetch = axios.create({
-    baseURL: "/api/v1",
+    baseURL: "/api/v1"
   });
 
   authFetch.interceptors.request.use(
@@ -124,15 +128,15 @@ const AppProvider = ({ children }) => {
           alertText,
           user,
           token,
-          location,
-        },
+          location
+        }
       });
       persistUserDataToLocalStorage({ user, token, location });
     } catch (error) {
       console.log(error.response);
       dispatch({
         type: AUTHENTICATE_USER_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       });
     }
     clearAlert();
@@ -147,19 +151,19 @@ const AppProvider = ({ children }) => {
     dispatch({ type: UPDATE_USER_INITIATE });
     try {
       const {
-        data: { user, token, location },
+        data: { user, token, location }
       } = await authFetch.patch("/auth/updateUser", currentUser);
 
       dispatch({
         type: UPDATE_USER_SUCCESS,
-        payload: { user, token, location },
+        payload: { user, token, location }
       });
       persistUserDataToLocalStorage({ user, token, location });
     } catch (error) {
       if (error.response.status !== 401) {
         dispatch({
           type: UPDATE_USER_ERROR,
-          payload: { msg: error.response.data.msg },
+          payload: { msg: error.response.data.msg }
         });
       }
     }
@@ -173,7 +177,7 @@ const AppProvider = ({ children }) => {
   const handleChange = ({ name, value }) => {
     dispatch({
       type: HANDLE_CHANGE,
-      payload: { name, value },
+      payload: { name, value }
     });
   };
 
@@ -191,7 +195,7 @@ const AppProvider = ({ children }) => {
         position,
         jobLocation,
         jobType,
-        jobStatus,
+        jobStatus
       });
       dispatch({ type: CREATE_JOB_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
@@ -199,7 +203,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status === 401) return;
       dispatch({
         type: CREATE_JOB_ERROR,
-        payload: { msg: error.response.data.message },
+        payload: { msg: error.response.data.message }
       });
     }
     clearAlert();
@@ -216,8 +220,8 @@ const AppProvider = ({ children }) => {
         payload: {
           jobs,
           totalJobs,
-          pages,
-        },
+          pages
+        }
       });
     } catch (error) {
       console.log(error.response);
@@ -240,7 +244,7 @@ const AppProvider = ({ children }) => {
         company,
         jobLocation,
         jobType,
-        jobStatus,
+        jobStatus
       });
       dispatch({ type: EDIT_JOB_SUCCESS });
       clearValues();
@@ -248,7 +252,7 @@ const AppProvider = ({ children }) => {
       if (error.response.status === 401) return;
       dispatch({
         type: EDIT_JOB_ERROR,
-        payload: { msg: error.response.data.msg },
+        payload: { msg: error.response.data.msg }
       });
     }
   };
@@ -259,6 +263,26 @@ const AppProvider = ({ children }) => {
       getJobs();
     } catch (error) {
       console.log(error.response);
+      // logoutCurrentUser();
+    }
+    clearAlert();
+  };
+
+  const getJobStats = async () => {
+    dispatch({ type: GET_JOB_STATS_INITIATE });
+    try {
+      const {
+        data: { jobsByStatus, monthlyApplications }
+      } = await authFetch.get("jobs/stats");
+      dispatch({
+        type: GET_JOB_STATS_SUCCESS,
+        payload: {
+          jobStats: jobsByStatus,
+          monthlyApplications
+        }
+      });
+    } catch (error) {
+      console.log(error);
       // logoutCurrentUser();
     }
     clearAlert();
@@ -281,6 +305,7 @@ const AppProvider = ({ children }) => {
         deleteJob,
         editJob,
         deleteJob,
+        getJobStats
       }}
     >
       {children}

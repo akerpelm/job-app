@@ -21,6 +21,8 @@ import {
   EDIT_JOB_INITIATE,
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
+  GET_JOB_STATS_INITIATE,
+  GET_JOB_STATS_SUCCESS
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -31,7 +33,7 @@ const reducer = (state, action) => {
         ...state,
         showAlert: true,
         alertType: "danger",
-        alertText: "Please provide all values.",
+        alertText: "Please provide all values."
       };
     }
     case CLEAR_ALERT: {
@@ -39,13 +41,13 @@ const reducer = (state, action) => {
         ...state,
         showAlert: false,
         alertType: "",
-        alertText: "",
+        alertText: ""
       };
     }
     case AUTHENTICATE_USER_INITIATE: {
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       };
     }
     case AUTHENTICATE_USER_SUCCESS: {
@@ -59,7 +61,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "success",
-        alertText,
+        alertText
       };
     }
     case AUTHENTICATE_USER_ERROR: {
@@ -68,13 +70,13 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "danger",
-        alertText: action.payload.msg,
+        alertText: action.payload.msg
       };
     }
     case UPDATE_USER_INITIATE: {
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       };
     }
     case UPDATE_USER_SUCCESS: {
@@ -88,7 +90,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "success",
-        alertText: "Profile updated.",
+        alertText: "Profile updated."
       };
     }
     case UPDATE_USER_ERROR: {
@@ -97,7 +99,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "danger",
-        alertText: action.payload.msg,
+        alertText: action.payload.msg
       };
     }
 
@@ -107,20 +109,20 @@ const reducer = (state, action) => {
         user: null,
         token: null,
         userLocation: "",
-        jobLocation: "",
+        jobLocation: ""
       };
     }
     case TOGGLE_SIDEBAR: {
       return {
         ...initialState,
-        showSidebar: !state.showSidebar,
+        showSidebar: !state.showSidebar
       };
     }
     case HANDLE_CHANGE: {
       const { name, value } = action.payload;
       return {
         ...state,
-        [name]: value,
+        [name]: value
       };
     }
     case CLEAR_VALUES: {
@@ -131,7 +133,7 @@ const reducer = (state, action) => {
         company: "",
         jobType: "Full-Time",
         jobStatus: "Application Pending",
-        jobLocation: state.userLocation,
+        jobLocation: state.userLocation
       };
       return { ...state, ...initialState };
     }
@@ -144,7 +146,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "success",
-        alertText: "Job entered successfully",
+        alertText: "Job entered successfully"
       };
     }
     case CREATE_JOB_ERROR: {
@@ -153,7 +155,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "danger",
-        alertText: action.payload.msg,
+        alertText: action.payload.msg
       };
     }
 
@@ -161,7 +163,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
-        showAlert: false,
+        showAlert: false
       };
     }
 
@@ -172,7 +174,7 @@ const reducer = (state, action) => {
         isLoading: false,
         jobs,
         totalJobs,
-        pages,
+        pages
       };
     }
 
@@ -188,7 +190,7 @@ const reducer = (state, action) => {
         jobType,
         jobStatus,
         jobLocation,
-        isEditing: true,
+        isEditing: true
       };
     }
     case EDIT_JOB_INITIATE: {
@@ -200,7 +202,7 @@ const reducer = (state, action) => {
         isLoading: false,
         showAlert: true,
         alertType: "success",
-        alertText: "Job updated successfully",
+        alertText: "Job updated successfully"
       };
     }
     case EDIT_JOB_ERROR: {
@@ -208,11 +210,23 @@ const reducer = (state, action) => {
         ...state,
         showAlert: true,
         alertType: "danger",
-        alertText: action.payload.msg,
+        alertText: action.payload.msg
       };
     }
     case DELETE_JOB_INITIATE: {
       return { ...state, isLoading: true };
+    }
+    case GET_JOB_STATS_INITIATE: {
+      return { ...state, isLoading: true, showAlert: false };
+    }
+    case GET_JOB_STATS_SUCCESS: {
+      const { jobStats, monthlyApplications } = action.payload;
+      return {
+        ...state,
+        isLoading: false,
+        jobStats,
+        monthlyApplications
+      };
     }
     default:
       throw new Error(`No such action: ${action.type}`);

@@ -7,8 +7,13 @@ import Navbar from "./Navbar";
 import FormRowDropdown from "./FormRowDropdown";
 import SearchContainer from "./SearchContainer";
 import JobsContainer from "./JobsContainer";
+import StatsContainer from "./StatsContainer";
+import ChartsContainer from "./ChartsContainer";
+import Loading from "./Loading";
+
 export {
   Logo,
+  Loading,
   FormRow,
   Alert,
   LargeSidebar,
@@ -17,4 +22,6 @@ export {
   FormRowDropdown,
   SearchContainer,
   JobsContainer,
+  StatsContainer,
+  ChartsContainer
 };
