@@ -1,5 +1,5 @@
 import express from "express";
-import rateLimite from "express-rate-limit";
+import rateLimiter from "express-rate-limit";
 import { register, login, updateUser } from "../controllers/authController.js";
 import authenticateUser from "../middleware/auth.js";
 const router = express.Router();
