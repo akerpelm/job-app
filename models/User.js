@@ -9,35 +9,35 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please provide a name"],
     minlength: 3,
     maxlength: 20,
-    trim: true,
+    trim: true
   },
   email: {
     type: String,
     required: [true, "Please provide an email"],
     validate: {
       validator: validator.isEmail,
-      message: "Please provide a valid email.",
+      message: "Please provide a valid email."
     },
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
     required: [true, "Please provide a password"],
     minlength: 6,
-    select: false,
+    select: false
   },
   lastName: {
     type: String,
     trim: true,
     maxlength: 30,
-    default: "lastName",
+    default: "lastName"
   },
   location: {
     type: String,
     trim: true,
     maxlength: 20,
-    default: "New York, NY",
-  },
+    default: "New York, NY"
+  }
 });
 
 //called before we save a document, but not every method will trigger. When updating a user, must call save to retrigger.
@@ -52,7 +52,7 @@ UserSchema.pre("save", async function () {
 
 UserSchema.methods.createJWT = function () {
   return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
+    expiresIn: process.env.JWT_LIFETIME
   });
 };
 

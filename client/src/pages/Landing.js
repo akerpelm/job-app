@@ -15,10 +15,18 @@ const Landing = () => {
             Job <span>tracking</span> app
           </h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam,
-            vitae! Laboriosam, rem, aspernatur beatae quod pariatur, non modi
-            accusantium vitae accusamus quibusdam nemo. Nisi laboriosam totam
-            cum repudiandae consequuntur accusantium.
+            A simple application that allows users to track job applications
+            inspired by the arduous journey that is finding your first dev job.
+          </p>
+          <p>
+            Users may create, edit, and delete job apps. Additionally, users may
+            view all current applications (in a paginated manner), filter jobs
+            by position, and visualize their job app progress through some
+            simple area and bar charts.
+          </p>
+          <p>
+            Create your own username and password, or use the 'Demo User'
+            button.
           </p>
           <Link to="/register" className="btn btn-hero">
             Login/Register

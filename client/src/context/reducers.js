@@ -22,7 +22,9 @@ import {
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
   GET_JOB_STATS_INITIATE,
-  GET_JOB_STATS_SUCCESS
+  GET_JOB_STATS_SUCCESS,
+  CLEAR_FILTERS,
+  CHANGE_PAGE
 } from "./actions";
 import { initialState } from "./appContext";
 
@@ -122,6 +124,7 @@ const reducer = (state, action) => {
       const { name, value } = action.payload;
       return {
         ...state,
+        currentPage: 1,
         [name]: value
       };
     }
@@ -227,6 +230,19 @@ const reducer = (state, action) => {
         jobStats,
         monthlyApplications
       };
+    }
+    case CLEAR_FILTERS: {
+      const initialSearchState = {
+        search: "",
+        searchJobStatus: "all",
+        searchJobType: "all",
+        sort: "newest"
+      };
+
+      return { ...state, ...initialSearchState };
+    }
+    case CHANGE_PAGE: {
+      return { ...state, currentPage: action.payload.page };
     }
     default:
       throw new Error(`No such action: ${action.type}`);

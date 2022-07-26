@@ -25,13 +25,20 @@ import {
   EDIT_JOB_SUCCESS,
   EDIT_JOB_ERROR,
   GET_JOB_STATS_INITIATE,
-  GET_JOB_STATS_SUCCESS
+  GET_JOB_STATS_SUCCESS,
+  CLEAR_FILTERS,
+  CHANGE_PAGE
 } from "./actions";
-import { jobTypeOptions, jobStatusOptions } from "./contextConstants";
+import {
+  jobTypeOptions,
+  jobStatusOptions,
+  sortOptions
+} from "./contextConstants";
 
 const token = localStorage.getItem("token");
 const user = localStorage.getItem("user");
 const userLocation = localStorage.getItem("location");
+
 const initialState = {
   isLoading: false,
   showAlert: false,
@@ -55,7 +62,12 @@ const initialState = {
   pages: 1,
   currentPage: 1,
   jobStats: {},
-  monthlyApplications: []
+  monthlyApplications: [],
+  search: "",
+  searchJobStatus: "all",
+  searchJobType: "all",
+  sort: "newest",
+  sortOptions
 };
 
 const AppContext = React.createContext();
@@ -83,7 +95,7 @@ const AppProvider = ({ children }) => {
       return response;
     },
     (error) => {
-      // console.log(error.response);
+      console.log(error.response);
       if (error.response.status === 401) {
         logoutCurrentUser();
       }
@@ -210,7 +222,11 @@ const AppProvider = ({ children }) => {
   };
 
   const getJobs = async () => {
-    let url = `/jobs`;
+    const { searchJobStatus, searchJobType, sort, search, currentPage } = state;
+    let url = `/jobs?page=${currentPage}&jobStatus=${searchJobStatus}&jobType=${searchJobType}&sort=${sort}`;
+    if (search) {
+      url += `&search=${search}`;
+    }
     dispatch({ type: GET_JOBS_INITIATE });
     try {
       const { data } = await authFetch(url);
@@ -225,7 +241,7 @@ const AppProvider = ({ children }) => {
       });
     } catch (error) {
       console.log(error.response);
-      // logoutCurrentUser();
+      logoutCurrentUser();
     }
     clearAlert();
   };
@@ -247,7 +263,7 @@ const AppProvider = ({ children }) => {
         jobStatus
       });
       dispatch({ type: EDIT_JOB_SUCCESS });
-      clearValues();
+      clearAlert();
     } catch (error) {
       if (error.response.status === 401) return;
       dispatch({
@@ -263,7 +279,7 @@ const AppProvider = ({ children }) => {
       getJobs();
     } catch (error) {
       console.log(error.response);
-      // logoutCurrentUser();
+      logoutCurrentUser();
     }
     clearAlert();
   };
@@ -283,9 +299,17 @@ const AppProvider = ({ children }) => {
       });
     } catch (error) {
       console.log(error);
-      // logoutCurrentUser();
+      logoutCurrentUser();
     }
     clearAlert();
+  };
+
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
+  };
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } });
   };
 
   return (
@@ -302,10 +326,11 @@ const AppProvider = ({ children }) => {
         createJob,
         getJobs,
         setEditJob,
-        deleteJob,
         editJob,
         deleteJob,
-        getJobStats
+        getJobStats,
+        clearFilters,
+        changePage
       }}
     >
       {children}

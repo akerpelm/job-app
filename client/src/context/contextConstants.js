@@ -5,7 +5,7 @@ const jobStatusOptions = [
   "Interview",
   "Rejected",
   "Declined",
-  "Accepted",
+  "Accepted"
 ];
 
 const jobTypeOptions = [
@@ -13,7 +13,16 @@ const jobTypeOptions = [
   "Part-Time",
   "Contract",
   "Per Diem",
-  "Internship",
+  "Internship"
 ];
 
-export { jobStatusOptions, jobTypeOptions };
+const sortOptions = [
+  "newest",
+  "oldest",
+  "company a-z",
+  "company z-a",
+  "position a-z",
+  "position z-a"
+];
+
+export { jobStatusOptions, jobTypeOptions, sortOptions };

@@ -32,8 +32,56 @@ const deleteJob = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Job removed successfully." });
 };
 const getAllJobs = async (req, res) => {
-  const jobs = await Job.find({ createdBy: req.user.userId });
-  res.status(StatusCodes.OK).json({ jobs, totalJobs: jobs.length, pages: 1 });
+  const { jobStatus, jobType, sort, search } = req.query;
+
+  const queryObject = {
+    createdBy: req.user.userId
+  };
+
+  if (jobStatus && jobStatus !== "all") {
+    queryObject.jobStatus = jobStatus;
+  }
+
+  if (jobType && jobType !== "all") {
+    queryObject.jobType = jobType;
+  }
+
+  if (search) {
+    queryObject.position = { $regex: search, $options: "i" }; //case insensitive
+    // queryObject.company = { $regex: search, $options: "i" }; //case insensitive
+  }
+  let result = Job.find(queryObject);
+
+  if (sort === "newest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "position a-z") {
+    result = result.sort("position");
+  }
+  if (sort === "position z-a") {
+    result = result.sort("-position");
+  }
+  if (sort === "company a-z") {
+    result = result.sort("company");
+  }
+  if (sort === "company z-a") {
+    result = result.sort("-company");
+  }
+
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+  result = result.skip(offset).limit(limit);
+
+  const jobs = await result;
+
+  const totalJobs = await Job.countDocuments(queryObject);
+  const pages = Math.ceil(totalJobs / limit);
+
+  res.status(StatusCodes.OK).json({ jobs, totalJobs, pages });
 };
 const updateJob = async (req, res) => {
   const {
@@ -76,7 +124,6 @@ const showStats = async (req, res) => {
     return acc;
   }, {});
 
-  console.log(jobsGroupedByStatus);
   const jobsByStatus = {
     applicationPending: jobsGroupedByStatus["Application Pending"] || 0,
     applicationSubmitted: jobsGroupedByStatus["Application Submitted"] || 0,
@@ -105,8 +152,8 @@ const showStats = async (req, res) => {
         count: { $sum: 1 }
       }
     },
-    { $sort: { "_id.year": -1, "_id.month": -1, "_id.week": -1 } },
-    { $limit: 6 }
+    { $sort: { "_id.year": -1, "_id.month": -1, "_id.week": -1 } }
+    // { $limit: 10 }
   ]);
 
   monthlyApplications = monthlyApplications

@@ -9,7 +9,7 @@ const initialState = {
   name: "",
   email: "",
   password: "",
-  isMember: true,
+  isMember: true
 };
 
 const Register = () => {
@@ -33,20 +33,28 @@ const Register = () => {
       return;
     }
     const currentUser = { name, email, password };
-
     if (isMember) {
       authenticateUser({
         currentUser,
         authMethod: "login",
-        alertText: "Login successful. Redirecting...",
+        alertText: "Login successful. Redirecting..."
       });
     } else {
       authenticateUser({
         currentUser,
         authMethod: "register",
-        alertText: "Registration complete. Redirecting...",
+        alertText: "Registration complete. Redirecting..."
       });
     }
+  };
+
+  const handleDemoData = () => {
+    setValues({
+      name: "",
+      email: "demo@user.com",
+      password: "password",
+      isMember: true
+    });
   };
 
   useEffect(() => {
@@ -90,6 +98,18 @@ const Register = () => {
         <button type="submit" className="btn btn-block" disabled={isLoading}>
           Submit
         </button>
+        {values.isMember && values.email !== "demo@user.com" && (
+          <button
+            type="submit"
+            className="btn btn-block"
+            disabled={isLoading || values.email === "demo@user.com"}
+            onClick={(e) => {
+              handleDemoData();
+            }}
+          >
+            Demo User
+          </button>
+        )}
         <p>
           {values.isMember ? "Not a member yet?" : "Already a member?"}
           <button type="button" onClick={toggleMember} className="member-btn">

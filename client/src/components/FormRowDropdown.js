@@ -10,7 +10,7 @@ const FormRowDropdown = ({ name, value, handleChange, labelText, options }) => {
         onChange={handleChange}
         className="form-select"
       >
-        {options.map((item, index) => {
+        {options?.map((item, index) => {
           return (
             <option value={item} key={index}>
               {item}
