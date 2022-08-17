@@ -6,7 +6,7 @@ import {
   ResponsiveContainer,
   AreaChart,
   Area
-} from "recharts";
+} from 'recharts';
 
 const AreaChartComponent = ({ data }) => {
   return (
@@ -16,7 +16,7 @@ const AreaChartComponent = ({ data }) => {
         <XAxis dataKey="date" />
         <YAxis allowDecimals={false} />
         <Tooltip />
-        <Area type="monotone" dataKey="count" stroke="#2cb1bc" fill="#2cb1bc" />
+        <Area type="monotone" dataKey="count" stroke="#f8671f" fill="#f1d5c8" />
       </AreaChart>
     </ResponsiveContainer>
   );

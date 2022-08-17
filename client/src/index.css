@@ -5,7 +5,7 @@
 }
 
 /* fonts */
-@import url("https://fonts.googleapis.com/css2?family=Cabin&family=Roboto+Condensed:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cabin&family=Roboto+Condensed:wght@400;700&display=swap');
 
 html {
   font-size: 100%;
@@ -13,16 +13,16 @@ html {
 
 :root {
   /* colors */
-  --primary-50: #e0fcff;
-  --primary-100: #bef8fd;
-  --primary-200: #87eaf2;
-  --primary-300: #54d1db;
-  --primary-400: #38bec9;
-  --primary-500: #2cb1bc;
-  --primary-600: #14919b;
-  --primary-700: #0e7c86;
-  --primary-800: #0a6c74;
-  --primary-900: #044e54;
+  --primary-50: #f1d5c8;
+  --primary-100: #eec3ad;
+  --primary-200: #ecb69c;
+  --primary-300: #efa580;
+  --primary-400: #ef8d5d;
+  --primary-500: #f27d42;
+  --primary-600: #f16e2d;
+  --primary-700: #f8671f;
+  --primary-800: #f95f12;
+  --primary-900: #ff5500;
 
   /* grey */
   --grey-50: #f0f4f8;
@@ -44,8 +44,8 @@ html {
   --green-dark: #0f5132;
 
   /* fonts  */
-  --headingFont: "Roboto Condensed", Sans-Serif;
-  --bodyFont: "Cabin", Sans-Serif;
+  --headingFont: 'Roboto Condensed', Sans-Serif;
+  --bodyFont: 'Cabin', Sans-Serif;
   --small-text: 0.875rem;
   --extra-small-text: 0.7em;
   /* rest of the vars */

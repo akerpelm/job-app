@@ -1,8 +1,8 @@
-import { useAppContext } from "../context/appContext";
-import StatCard from "./StatCard";
-import { GiSandsOfTime, GiCardDiscard } from "react-icons/gi";
-import { MdOutlineEmojiPeople } from "react-icons/md";
-import Wrapper from "../assets/wrappers/StatsContainer";
+import { useAppContext } from '../context/appContext';
+import StatCard from './StatCard';
+import { GiSandsOfTime, GiCardDiscard } from 'react-icons/gi';
+import { MdOutlineEmojiPeople } from 'react-icons/md';
+import Wrapper from '../assets/wrappers/StatsContainer';
 
 const StatsContainer = () => {
   const {
@@ -18,25 +18,25 @@ const StatsContainer = () => {
 
   const allStats = [
     {
-      title: "pending / submitted applications",
+      title: 'pending / submitted applications',
       count: applicationPending + applicationSubmitted || null,
       icon: <GiSandsOfTime />,
-      color: "#e9b949",
-      bcg: "#fcefc7"
+      color: '#e9b949',
+      bcg: '#fcefc7'
     },
     {
-      title: " phone screens / interviews",
+      title: ' phone screens / interviews',
       count: phoneScreen + interview || null,
       icon: <MdOutlineEmojiPeople />,
-      color: "#647acb",
-      bcg: "#e0e7f9"
+      color: '#647acb',
+      bcg: '#e0e7f9'
     },
     {
-      title: "declined / turned down",
+      title: 'declined / turned down',
       count: declined + rejected || null,
       icon: <GiCardDiscard />,
-      color: "#d66a6a",
-      bcg: "#ffeeee"
+      color: '#d66a6a',
+      bcg: '#ffeeee'
     }
   ];
 

@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Logo, FormRow, Alert } from "../components";
-import Wrapper from "../assets/wrappers/RegisterPage";
-import { useAppContext } from "../context/appContext";
+import { Logo, FormRow, Alert } from '../components';
+import Wrapper from '../assets/wrappers/RegisterPage';
+import { useAppContext } from '../context/appContext';
 
 const initialState = {
-  name: "",
-  email: "",
-  password: "",
+  name: '',
+  email: '',
+  password: '',
   isMember: true
 };
 
@@ -36,23 +36,23 @@ const Register = () => {
     if (isMember) {
       authenticateUser({
         currentUser,
-        authMethod: "login",
-        alertText: "Login successful. Redirecting..."
+        authMethod: 'login',
+        alertText: 'Login successful. Redirecting...'
       });
     } else {
       authenticateUser({
         currentUser,
-        authMethod: "register",
-        alertText: "Registration complete. Redirecting..."
+        authMethod: 'register',
+        alertText: 'Registration complete. Redirecting...'
       });
     }
   };
 
   const handleDemoData = () => {
     setValues({
-      name: "",
-      email: "demo@user.com",
-      password: "password",
+      name: '',
+      email: 'demo@user.com',
+      password: 'password',
       isMember: true
     });
   };
@@ -60,7 +60,7 @@ const Register = () => {
   useEffect(() => {
     if (user) {
       setTimeout(() => {
-        navigate("/");
+        navigate('/');
       }, 3000);
     }
   }, [user, navigate]);
@@ -68,8 +68,7 @@ const Register = () => {
   return (
     <Wrapper className="full-page">
       <form className="form" onSubmit={onSubmit}>
-        <Logo />
-        <h3>{values.isMember ? "Login" : "Register"}</h3>
+        <h3>{values.isMember ? 'Login' : 'Register'}</h3>
         {showAlert && <Alert />}
         {/* name input */}
         {!values.isMember && (
@@ -98,11 +97,11 @@ const Register = () => {
         <button type="submit" className="btn btn-block" disabled={isLoading}>
           Submit
         </button>
-        {values.isMember && values.email !== "demo@user.com" && (
+        {values.isMember && values.email !== 'demo@user.com' && (
           <button
             type="submit"
             className="btn btn-block"
-            disabled={isLoading || values.email === "demo@user.com"}
+            disabled={isLoading || values.email === 'demo@user.com'}
             onClick={(e) => {
               handleDemoData();
             }}
@@ -111,9 +110,9 @@ const Register = () => {
           </button>
         )}
         <p>
-          {values.isMember ? "Not a member yet?" : "Already a member?"}
+          {values.isMember ? 'Not a member yet?' : 'Already a member?'}
           <button type="button" onClick={toggleMember} className="member-btn">
-            {values.isMember ? "Register" : "Login"}
+            {values.isMember ? 'Register' : 'Login'}
           </button>
         </p>
       </form>
