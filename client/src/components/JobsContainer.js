@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useAppContext } from "../context/appContext";
-import PaginationButtonContainer from "./PaginationButtonContainer";
-import Loading from "./Loading";
-import Job from "./Job";
-import Wrapper from "../assets/wrappers/JobsContainer";
+import { useEffect } from 'react';
+import { useAppContext } from '../context/appContext';
+import PaginationButtonContainer from './PaginationButtonContainer';
+import Loading from './Loading';
+import Job from './Job';
+import Wrapper from '../assets/wrappers/JobsContainer';
 const JobsContainer = () => {
   const {
     getJobs,
@@ -37,7 +37,7 @@ const JobsContainer = () => {
   return (
     <Wrapper>
       <h5>
-        {totalJobs} job{jobs.length > 1 && "s"}
+        {totalJobs} job{jobs.length > 1 && 's'}
       </h5>
       <div className="jobs">
         {jobs.map((job) => {
